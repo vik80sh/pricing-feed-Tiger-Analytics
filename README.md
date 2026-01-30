@@ -1,73 +1,46 @@
-# React + TypeScript + Vite
+## 📌 Context Diagram
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### Overview  
+This system is a **Single Page Web Application (SPA)** that allows business users to manage retail pricing data.
 
-Currently, two official plugins are available:
+Users can:
+- Upload pricing data using CSV files (Store ID, SKU, Product Name, Price, Date)  
+- Search pricing records using different criteria  
+- Edit and save pricing records  
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+### System Interaction  
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+- The **User** interacts with the **Frontend SPA** to upload, search, and edit pricing data.  
+- The **Frontend SPA** is designed to communicate with a **Backend API** for data operations.  
+- The **Backend API** is responsible for validating CSV files and persisting data into a **Database**.  
+- The **Database** stores all pricing information persistently and is accessed only through the backend API.  
 
-## Expanding the ESLint configuration
+Direct access to the database from the frontend is not allowed.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Current Implementation Note  
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+For the current implementation, only the **frontend (SPA)** is developed.  
+Pricing data is stored temporarily in **Redux state** and persisted using **browser local storage** for demonstration purposes.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+The backend API and database are assumed components and are represented conceptually.  
+The frontend is designed so that it can later be integrated with real backend APIs without major changes.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Context Diagram (Text Representation)
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+
+User
+  |
+  v
+Frontend SPA (React + TypeScript)
+  |
+  v
+Redux - Backend API (assumed)
+  |
+  v
+Redux/Local Storage - Database (assumed)
