@@ -8,7 +8,7 @@ A modern, responsive Single Page Web Application (SPA) built with React and Type
 ## What You Can Do
 - 📤 **Upload Pricing Data** – Import CSV files with Store ID, SKU, Product Name, Price, and Date
 - 🔍 **Search & Filter** – Quickly find specific pricing records across your dataset
-**Sort Data:** Click on any column header (Store ID, SKU, Product Name, Price, or Date) to sort the data in ascending or descending order. Click again to reverse the sort direction.
+-  **Sort Data:** Click on any column header (Store ID, SKU, Product Name, Price, or Date) to sort the data in ascending or descending order. Click again to reverse the sort direction.
 - ✏️ **Edit Records** – Update prices and view changes in real-time
 
 ---
