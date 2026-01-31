@@ -1,7 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./DataTable.css";
-import { ERROR_MESSAGES, BUTTON_LABELS, SORT_SYMBOLS, PAGINATION } from "../../utils/constants";
-import {  toast } from "react-toastify";
+import {
+  ERROR_MESSAGES,
+  BUTTON_LABELS,
+  SORT_SYMBOLS,
+  PAGINATION,
+} from "../../utils/constants";
+import { toast } from "react-toastify";
 
 export interface Column<T> {
   key: keyof T;
@@ -31,7 +36,6 @@ function DataTable<T extends Record<string, any>>({
   const [sortKey, setSortKey] = useState<keyof T | null>(null);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
-  
   const sortedData = [...data].sort((a, b) => {
     if (!sortKey) return 0;
 
@@ -47,6 +51,10 @@ function DataTable<T extends Record<string, any>>({
   const totalPages = Math.ceil(sortedData.length / pageSize);
   const startIndex = (currentPage - 1) * pageSize;
   const paginatedData = sortedData.slice(startIndex, startIndex + pageSize);
+  
+  useEffect(() => {
+      setCurrentPage(1);
+    }, [data]);
 
   const startEdit = (row: T, index: number) => {
     setEditIndex(index);
@@ -86,7 +94,7 @@ function DataTable<T extends Record<string, any>>({
   };
 
   return (
-    <div className="table-container">
+    <div className="table-wrapper">
       <table className="data-table">
         <thead>
           <tr>
@@ -98,7 +106,11 @@ function DataTable<T extends Record<string, any>>({
               >
                 {col.label}
                 {sortKey === col.key && (
-                  <span>{sortOrder === "asc" ? SORT_SYMBOLS.ASC : SORT_SYMBOLS.DESC}</span>
+                  <span className="sort-icon">
+                    {sortOrder === "asc"
+                      ? SORT_SYMBOLS.ASC
+                      : SORT_SYMBOLS.DESC}
+                  </span>
                 )}
               </th>
             ))}
@@ -112,6 +124,7 @@ function DataTable<T extends Record<string, any>>({
                 <td key={String(col.key)}>
                   {editIndex === rowIndex && col.editable ? (
                     <input
+                      className="edit-input"
                       value={String(editedRow?.[col.key] ?? "")}
                       onChange={(e) => handleChange(col.key, e.target.value)}
                     />
@@ -121,18 +134,28 @@ function DataTable<T extends Record<string, any>>({
                 </td>
               ))}
               {(onSave || onDelete) && (
-                <td>
+                <td className="action-cell">
                   {editIndex === rowIndex ? (
-                    <button onClick={handleSave}>{BUTTON_LABELS.SAVE}</button>
+                    <button className="btn save" onClick={handleSave}>
+                      {BUTTON_LABELS.SAVE}
+                    </button>
                   ) : (
                     <>
                       {onSave && (
-                        <button onClick={() => startEdit(row, rowIndex)}>
+                        <button
+                          className="btn edit"
+                          onClick={() => startEdit(row, rowIndex)}
+                        >
                           {BUTTON_LABELS.EDIT}
                         </button>
                       )}
                       {onDelete && (
-                        <button onClick={() => onDelete(row)}>{BUTTON_LABELS.DELETE}</button>
+                        <button
+                          className="btn delete"
+                          onClick={() => onDelete(row)}
+                        >
+                          {BUTTON_LABELS.DELETE}
+                        </button>
                       )}
                     </>
                   )}
@@ -143,7 +166,6 @@ function DataTable<T extends Record<string, any>>({
         </tbody>
       </table>
 
-      {/* Pagination */}
       {totalPages > 1 && (
         <div className="pagination">
           <button
@@ -163,7 +185,6 @@ function DataTable<T extends Record<string, any>>({
           </button>
         </div>
       )}
-    
     </div>
   );
 }

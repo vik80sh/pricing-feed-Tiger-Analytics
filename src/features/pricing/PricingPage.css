@@ -1,0 +1,68 @@
+.pricing-page {
+  margin-top: 10px;
+}
+
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap; 
+  gap: 12px;
+  background: #ffffff;
+  padding: 14px 16px;
+  border-radius: 10px;
+  margin-bottom: 18px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+}
+
+
+.btn {
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn.secondary {
+  background-color: #2a5298;
+  color: white;
+}
+
+.btn.secondary:hover {
+  background-color: #1f3f7a;
+}
+
+.btn.danger {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.btn.danger:hover {
+  background-color: #c0392b;
+}
+
+.table-card {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 10px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+}
+
+
+@media (max-width: 768px) {
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}

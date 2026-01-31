@@ -23,6 +23,7 @@ import {
   PRICING_COLUMNS,
 } from "../../utils/constants";
 
+import "./PricingPage.css";
 
 const PricingPage: React.FC = () => {
   const dispatch = useDispatch();
@@ -30,13 +31,13 @@ const PricingPage: React.FC = () => {
 
   const [searchQuery, setSearchQuery] = useState("");
 
-
   useEffect(() => {
     localStorage.setItem(STORAGE_KEYS.PRICING_RECORDS, JSON.stringify(records));
   }, [records]);
 
   const handleFileUpload = async (file: File) => {
     const parsedData = await parseCsvFile(file);
+    setSearchQuery("");
     dispatch(setRecords(parsedData));
   };
 
@@ -55,29 +56,49 @@ const PricingPage: React.FC = () => {
     );
     if (!confirmClear) return;
 
-    localStorage.removeItem(STORAGE_KEYS.PRICING_RECORDS); 
-    dispatch(clearRecords());                   
-  }
+    localStorage.removeItem(STORAGE_KEYS.PRICING_RECORDS);
+    dispatch(clearRecords());
+    setSearchQuery("");
+  };
+
   return (
-    <div>
-      <CsvUpload onFileParsed={handleFileUpload} />
-      <button onClick={handleClearAll}>Clear All Data</button>
-      <SearchBar
-        placeholder={UI_LABELS.SEARCH_PLACEHOLDER}
-        onSearch={setSearchQuery}
-      />
-      <button onClick={() => exportToCsv(EXPORT_FILENAMES.PRICING_DATA, filteredRecords)}>
-        {UI_LABELS.EXPORT_CSV_BUTTON}
-      </button>
-      <DataTable<PricingRecord>
-        columns={PRICING_COLUMNS as any}
-        data={filteredRecords}
-        onSave={(updatedRow) => dispatch(updateRecord(updatedRow))}
-        onDelete={(row: PricingRecord) =>
-          dispatch(deleteRecord({ storeId: row.storeId, sku: row.sku }))
-        }
-        pageSize={10}
-      />
+    <div className="pricing-page">
+     
+      <div className="toolbar">
+        <CsvUpload onFileParsed={handleFileUpload} />
+
+        <button
+          className="btn secondary"
+          onClick={() =>
+            exportToCsv(EXPORT_FILENAMES.PRICING_DATA, filteredRecords)
+          }
+        >
+          {UI_LABELS.EXPORT_CSV_BUTTON}
+        </button>
+
+        <SearchBar
+          placeholder={UI_LABELS.SEARCH_PLACEHOLDER}
+          value={searchQuery} 
+          onSearch={setSearchQuery}
+        />
+
+        <button className="btn danger" onClick={handleClearAll}>
+          Clear All
+        </button>
+      </div>
+
+     
+      <div className="table-card">
+        <DataTable<PricingRecord>
+          columns={PRICING_COLUMNS as any}
+          data={filteredRecords}
+          onSave={(updatedRow) => dispatch(updateRecord(updatedRow))}
+          onDelete={(row: PricingRecord) =>
+            dispatch(deleteRecord({ storeId: row.storeId, sku: row.sku }))
+          }
+          pageSize={10}
+        />
+      </div>
     </div>
   );
 };

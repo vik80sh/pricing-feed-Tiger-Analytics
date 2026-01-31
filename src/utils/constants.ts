@@ -22,6 +22,9 @@ export const UI_LABELS = {
   NO_PRICING_DATA: "No pricing data available. Please upload a CSV file.",
   SEARCH_PLACEHOLDER: "Search by Store ID, SKU or Product Name",
   EXPORT_CSV_BUTTON: "Export CSV",
+  UPLOAD_SUCCESS: "CSV file uploaded successfully",
+  UPLOAD_BUTTON: "Upload CSV",
+
 };
 
 // Column Headers

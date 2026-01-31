@@ -3,23 +3,23 @@ import "./SearchBar.css";
 
 interface SearchBarProps {
   placeholder?: string;
+  value: string;              
   onSearch: (value: string) => void;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({
   placeholder = "Search...",
+  value,
   onSearch,
 }) => {
-  const [value, setValue] = useState("");
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value;
-    setValue(newValue);
-    onSearch(newValue);
+   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onSearch(e.target.value);
   };
 
   return (
     <div className="search-bar">
+      <span className="search-icon">🔍</span>
       <input
         type="text"
         value={value}
