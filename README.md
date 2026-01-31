@@ -1,6 +1,15 @@
+
 # Pricing Feed Application
 
-A Single Page Web Application (SPA) for managing retail pricing data with CSV upload, search, and edit capabilities.
+A modern, responsive Single Page Web Application (SPA) built with React and TypeScript for managing retail pricing data across multiple stores. Upload, search, filter, and edit pricing records with ease.
+
+**Live Demo:** https://pricing-feed-tiger-analytics.vercel.app/
+
+## What You Can Do
+- 📤 **Upload Pricing Data** – Import CSV files with Store ID, SKU, Product Name, Price, and Date
+- 🔍 **Search & Filter** – Quickly find specific pricing records across your dataset
+**Sort Data:** Click on any column header (Store ID, SKU, Product Name, Price, or Date) to sort the data in ascending or descending order. Click again to reverse the sort direction.
+- ✏️ **Edit Records** – Update prices and view changes in real-time
 
 ---
 
