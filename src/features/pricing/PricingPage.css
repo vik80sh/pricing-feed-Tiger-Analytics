@@ -55,6 +55,24 @@
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
 }
 
+.csv-hint {
+  margin-left: auto; 
+  font-size: 12px;
+  color: #666;
+  white-space: nowrap;
+}
+
+
+@media (max-width: 768px) {
+  .csv-hint {
+    margin-left: 0;
+    width: 100%;
+    text-align: left;
+    margin-top: 6px;
+  }
+}
+
+
 
 @media (max-width: 768px) {
   .toolbar {

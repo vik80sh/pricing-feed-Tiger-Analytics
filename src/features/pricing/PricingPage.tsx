@@ -52,7 +52,7 @@ const PricingPage: React.FC = () => {
 
   const handleClearAll = () => {
     const confirmClear = window.confirm(
-      "Are you sure you want to clear all pricing data?"
+      "Are you sure you want to clear all pricing data?",
     );
     if (!confirmClear) return;
 
@@ -63,7 +63,6 @@ const PricingPage: React.FC = () => {
 
   return (
     <div className="pricing-page">
-     
       <div className="toolbar">
         <CsvUpload onFileParsed={handleFileUpload} />
 
@@ -78,16 +77,20 @@ const PricingPage: React.FC = () => {
 
         <SearchBar
           placeholder={UI_LABELS.SEARCH_PLACEHOLDER}
-          value={searchQuery} 
+          value={searchQuery}
           onSearch={setSearchQuery}
         />
 
         <button className="btn danger" onClick={handleClearAll}>
           Clear All
         </button>
-      </div>
 
-     
+        <span className="csv-hint">
+        {UI_LABELS.CSV_FORMAT_HINT}
+      </span>
+      </div>
+      
+
       <div className="table-card">
         <DataTable<PricingRecord>
           columns={PRICING_COLUMNS as any}

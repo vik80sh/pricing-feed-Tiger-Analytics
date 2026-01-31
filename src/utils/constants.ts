@@ -25,6 +25,7 @@ export const UI_LABELS = {
   EXPORT_CSV_BUTTON: "Export CSV",
   UPLOAD_SUCCESS: "CSV file uploaded successfully",
   UPLOAD_BUTTON: "Upload CSV",
+  CSV_FORMAT_HINT: "CSV format: Store ID, SKU, Product Name, Price, Date"
 
 };
 
