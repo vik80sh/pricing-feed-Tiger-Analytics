@@ -1,5 +1,7 @@
 import Papa, { type ParseResult } from "papaparse";
-import { PricingRecord } from "../features/pricing/pricingSlice";
+import type { PricingRecord } from "../features/pricing/pricingSlice";
+import { CSV_HEADERS, CSV_VALIDATION_ERRORS, ERROR_MESSAGES } from "./constants";
+import { toast } from "react-toastify/unstyled";
 
 export const parseCsvFile = (file: File): Promise<PricingRecord[]> => {
   return new Promise((resolve, reject) => {
@@ -11,24 +13,24 @@ export const parseCsvFile = (file: File): Promise<PricingRecord[]> => {
         const errors: string[] = [];
 
         results.data.forEach((row: any, index: number) => {
-          const storeId = row["Store ID"] || row["storeId"];
-          const sku = row["SKU"];
-          const productName = row["Product Name"] || row["productName"];
-          const price = Number(row["Price"]);
-          const date = row["Date"];
+          const storeId = row[CSV_HEADERS.STORE_ID[0]] || row[CSV_HEADERS.STORE_ID[1]];
+          const sku = row[CSV_HEADERS.SKU[0]] || row[CSV_HEADERS.SKU[1]];
+          const productName = row[CSV_HEADERS.PRODUCT_NAME[0]] || row[CSV_HEADERS.PRODUCT_NAME[1]];
+          const price = Number(row[CSV_HEADERS.PRICE[0]] || row[CSV_HEADERS.PRICE[1]]);
+          const date = row[CSV_HEADERS.DATE[0]] || row[CSV_HEADERS.DATE[1]];
 
           if (!storeId || !sku || !productName) {
-            errors.push(`Row ${index + 1}: Missing required field`);
+            errors.push(CSV_VALIDATION_ERRORS.MISSING_REQUIRED_FIELD(index + 1));
             return;
           }
 
           if (isNaN(price)) {
-            errors.push(`Row ${index + 1}: Price is not a number`);
+            errors.push(CSV_VALIDATION_ERRORS.PRICE_NOT_A_NUMBER(index + 1));
             return;
           }
 
           if (isNaN(Date.parse(date))) {
-            errors.push(`Row ${index + 1}: Invalid date`);
+            errors.push(CSV_VALIDATION_ERRORS.INVALID_DATE(index + 1));
             return;
           }
 
@@ -42,7 +44,7 @@ export const parseCsvFile = (file: File): Promise<PricingRecord[]> => {
         });
 
         if (errors.length > 0) {
-          alert("CSV Errors:\n" + errors.join("\n"));
+          toast.error( ERROR_MESSAGES.CSV_IMPORT_ERRORS + " " + ERROR_MESSAGES.NO_DATA_TO_DISPLAY + "\n" + errors.join("\n"));
         }
 
         resolve(formattedData);

@@ -1,4 +1,5 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { STORAGE_KEYS } from "../../utils/constants";
 
 export interface PricingRecord {
   storeId: string;
@@ -11,9 +12,16 @@ export interface PricingRecord {
 interface PricingState {
   records: PricingRecord[];
 }
-
+const loadFromLocalStorage = (): PricingRecord[] => {
+  try {
+    const data = localStorage.getItem(STORAGE_KEYS.PRICING_RECORDS);
+    return data ? JSON.parse(data) : [];
+  } catch {
+    return [];
+  }
+};
 const initialState: PricingState = {
-  records: [],
+  records: loadFromLocalStorage(),
 };
 
 const pricingSlice = createSlice({

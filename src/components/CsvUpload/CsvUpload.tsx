@@ -2,6 +2,8 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { setRecords } from "../../features/pricing/pricingSlice";
 import { parseCsvFile } from "../../utils/csvParser";
+import { ERROR_MESSAGES, FILE_INPUT } from "../../utils/constants";
+import { ToastContainer, toast } from "react-toastify";
 
 const CsvUpload: React.FC = () => {
   const dispatch = useDispatch();
@@ -16,15 +18,14 @@ const CsvUpload: React.FC = () => {
       const records = await parseCsvFile(file);
       dispatch(setRecords(records));
     } catch (error) {
-      console.error("Error parsing CSV file:", error);
-      alert("Failed to parse CSV file");
+      console.error(ERROR_MESSAGES.CSV_PARSING_ERROR, error);
+      toast(ERROR_MESSAGES.CSV_PARSING_FAILED, { type: "error" });
     }
   };
 
   return (
     <div>
-      <h2>Upload Pricing CSV</h2>
-      <input type="file" accept=".csv" onChange={handleFileUpload} />
+      <input type="file" accept={FILE_INPUT.ACCEPT} onChange={handleFileUpload} />
     </div>
   );
 };

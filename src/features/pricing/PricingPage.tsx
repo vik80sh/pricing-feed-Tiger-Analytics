@@ -11,12 +11,18 @@ import {
   updateRecord,
   deleteRecord,
   type PricingRecord,
+  clearRecords,
 } from "./pricingSlice";
 
 import type { RootState } from "../../app/store";
 import { exportToCsv } from "../../utils/csvExporter";
+import {
+  STORAGE_KEYS,
+  UI_LABELS,
+  EXPORT_FILENAMES,
+  PRICING_COLUMNS,
+} from "../../utils/constants";
 
-const STORAGE_KEY = "pricing_records";
 
 const PricingPage: React.FC = () => {
   const dispatch = useDispatch();
@@ -24,15 +30,9 @@ const PricingPage: React.FC = () => {
 
   const [searchQuery, setSearchQuery] = useState("");
 
-  useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      dispatch(setRecords(JSON.parse(stored)));
-    }
-  }, [dispatch]);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+    localStorage.setItem(STORAGE_KEYS.PRICING_RECORDS, JSON.stringify(records));
   }, [records]);
 
   const handleFileUpload = async (file: File) => {
@@ -49,25 +49,28 @@ const PricingPage: React.FC = () => {
     );
   });
 
+  const handleClearAll = () => {
+    const confirmClear = window.confirm(
+      "Are you sure you want to clear all pricing data?"
+    );
+    if (!confirmClear) return;
+
+    localStorage.removeItem(STORAGE_KEYS.PRICING_RECORDS); 
+    dispatch(clearRecords());                   
+  }
   return (
     <div>
       <CsvUpload onFileParsed={handleFileUpload} />
-
+      <button onClick={handleClearAll}>Clear All Data</button>
       <SearchBar
-        placeholder="Search by Store ID, SKU or Product Name"
+        placeholder={UI_LABELS.SEARCH_PLACEHOLDER}
         onSearch={setSearchQuery}
       />
-      <button onClick={() => exportToCsv("pricing-data.csv", filteredRecords)}>
-        Export CSV
+      <button onClick={() => exportToCsv(EXPORT_FILENAMES.PRICING_DATA, filteredRecords)}>
+        {UI_LABELS.EXPORT_CSV_BUTTON}
       </button>
-      <DataTable
-        columns={[
-          { key: "storeId", label: "Store ID" },
-          { key: "sku", label: "SKU" },
-          { key: "productName", label: "Product Name" },
-          { key: "price", label: "Price", editable: true },
-          { key: "date", label: "Date", editable: true },
-        ]}
+      <DataTable<PricingRecord>
+        columns={PRICING_COLUMNS as any}
         data={filteredRecords}
         onSave={(updatedRow) => dispatch(updateRecord(updatedRow))}
         onDelete={(row: PricingRecord) =>

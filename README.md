@@ -1,3 +1,45 @@
+# Pricing Feed Application
+
+A Single Page Web Application (SPA) for managing retail pricing data with CSV upload, search, and edit capabilities.
+
+---
+
+## Quick Start Guide
+
+### Prerequisites
+- Node.js (v20 or higher)
+- npm package manager
+
+### Installation & Setup
+
+1. **Clone the repository:**
+   ```bash
+   git clone <repository-url>
+   cd pricing-feed-Tiger-Analytics
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Run the application:**
+   ```bash
+   npm run dev
+   ```
+  
+
+4. **Open in browser:**
+   - Go to `http://localhost:5173` to view the application.
+
+### Usage
+
+- **Upload CSV:** Click on the upload button to select and upload a CSV file with pricing data.
+- **Search Records:** Use the search bar and filters to find specific pricing records.
+- **Edit Records:** Click on a record to edit its details and save changes.
+
+---
+
 ## Context Diagram
 
 ### Overview  

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "./DataTable.css";
+import { ERROR_MESSAGES, BUTTON_LABELS, SORT_SYMBOLS, PAGINATION } from "../../utils/constants";
+import {  toast } from "react-toastify";
 
 export interface Column<T> {
   key: keyof T;
@@ -20,7 +22,7 @@ function DataTable<T extends Record<string, any>>({
   data,
   onSave,
   onDelete,
-  pageSize = 10,
+  pageSize = PAGINATION.DEFAULT_PAGE_SIZE,
 }: DataTableProps<T>) {
   const [editIndex, setEditIndex] = useState<number | null>(null);
   const [editedRow, setEditedRow] = useState<T | null>(null);
@@ -29,7 +31,7 @@ function DataTable<T extends Record<string, any>>({
   const [sortKey, setSortKey] = useState<keyof T | null>(null);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
-  // 🔹 Sorting
+  
   const sortedData = [...data].sort((a, b) => {
     if (!sortKey) return 0;
 
@@ -42,7 +44,6 @@ function DataTable<T extends Record<string, any>>({
     return sortOrder === "asc" ? -1 : 1;
   });
 
-  // 🔹 Pagination
   const totalPages = Math.ceil(sortedData.length / pageSize);
   const startIndex = (currentPage - 1) * pageSize;
   const paginatedData = sortedData.slice(startIndex, startIndex + pageSize);
@@ -61,12 +62,12 @@ function DataTable<T extends Record<string, any>>({
     if (!editedRow) return;
 
     if ("price" in editedRow && isNaN(Number(editedRow["price"]))) {
-      alert("Price must be a number");
+      toast(ERROR_MESSAGES.PRICE_MUST_BE_NUMBER, { type: "error" });
       return;
     }
 
     if ("date" in editedRow && isNaN(Date.parse(editedRow["date"]))) {
-      alert("Date is invalid");
+      toast(ERROR_MESSAGES.INVALID_DATE, { type: "error" });
       return;
     }
 
@@ -97,7 +98,7 @@ function DataTable<T extends Record<string, any>>({
               >
                 {col.label}
                 {sortKey === col.key && (
-                  <span>{sortOrder === "asc" ? " 🔼" : " 🔽"}</span>
+                  <span>{sortOrder === "asc" ? SORT_SYMBOLS.ASC : SORT_SYMBOLS.DESC}</span>
                 )}
               </th>
             ))}
@@ -122,16 +123,16 @@ function DataTable<T extends Record<string, any>>({
               {(onSave || onDelete) && (
                 <td>
                   {editIndex === rowIndex ? (
-                    <button onClick={handleSave}>Save</button>
+                    <button onClick={handleSave}>{BUTTON_LABELS.SAVE}</button>
                   ) : (
                     <>
                       {onSave && (
                         <button onClick={() => startEdit(row, rowIndex)}>
-                          Edit
+                          {BUTTON_LABELS.EDIT}
                         </button>
                       )}
                       {onDelete && (
-                        <button onClick={() => onDelete(row)}>Delete</button>
+                        <button onClick={() => onDelete(row)}>{BUTTON_LABELS.DELETE}</button>
                       )}
                     </>
                   )}
@@ -149,7 +150,7 @@ function DataTable<T extends Record<string, any>>({
             disabled={currentPage === 1}
             onClick={() => setCurrentPage((p) => p - 1)}
           >
-            Prev
+            {BUTTON_LABELS.PREVIOUS}
           </button>
           <span>
             Page {currentPage} of {totalPages}
@@ -158,10 +159,11 @@ function DataTable<T extends Record<string, any>>({
             disabled={currentPage === totalPages}
             onClick={() => setCurrentPage((p) => p + 1)}
           >
-            Next
+            {BUTTON_LABELS.NEXT}
           </button>
         </div>
       )}
+    
     </div>
   );
 }

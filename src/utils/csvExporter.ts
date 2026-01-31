@@ -1,16 +1,19 @@
+import { toast } from "react-toastify/unstyled";
+import { ERROR_MESSAGES } from "./constants";
+
 export const exportToCsv = <T extends Record<string, any>>(
   filename: string,
   rows: T[]
 ) => {
   if (!rows || !rows.length) {
-    alert("No data to export");
+     toast.error(ERROR_MESSAGES.NO_DATA_TO_EXPORT);
     return;
   }
 
   const headers = Object.keys(rows[0]);
 
   const csvContent = [
-    headers.join(","), // header row
+    headers.join(","), 
     ...rows.map((row) =>
       headers.map((field) => JSON.stringify(row[field] ?? "")).join(",")
     ),
