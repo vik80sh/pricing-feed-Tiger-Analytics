@@ -51,7 +51,7 @@ function DataTable<T extends Record<string, any>>({
   const totalPages = Math.ceil(sortedData.length / pageSize);
   const startIndex = (currentPage - 1) * pageSize;
   const paginatedData = sortedData.slice(startIndex, startIndex + pageSize);
-  
+
   useEffect(() => {
       setCurrentPage(1);
     }, [data]);
@@ -93,6 +93,13 @@ function DataTable<T extends Record<string, any>>({
     }
   };
 
+  if (data.length === 0) {
+    return (
+      <div className="table-wrapper empty-state">
+        <p>{ERROR_MESSAGES.NO_PRICING_DATA}</p>
+      </div>
+    );
+  }
   return (
     <div className="table-wrapper">
       <table className="data-table">

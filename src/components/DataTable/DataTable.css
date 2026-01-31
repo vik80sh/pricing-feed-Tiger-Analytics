@@ -3,18 +3,22 @@
   border-radius: 10px;
   padding: 12px;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  overflow-x: auto; 
 }
 
+/* Table */
 .data-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 14px;
+  min-width: 600px; 
 }
 
 .data-table th,
 .data-table td {
   padding: 10px 12px;
   text-align: left;
+  white-space: nowrap;
 }
 
 .data-table th {
@@ -82,11 +86,40 @@
   justify-content: center;
   align-items: center;
   gap: 12px;
+  flex-wrap: wrap;
 }
 
-.pagination button {
-  padding: 6px 12px;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
+@media (max-width: 768px) {
+  .data-table {
+    font-size: 12px;
+  }
+
+  .data-table th,
+  .data-table td {
+    padding: 6px 8px;
+  }
+
+  .action-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .btn {
+    margin-right: 0;
+    width: 100%;
+  }
+
+  .pagination {
+    font-size: 12px;
+  }
+}
+.empty-state {
+  text-align: center;
+  padding: 40px 10px;
+  color: #666;
+  font-size: 14px;
+}
+.empty-state p {
+  margin: 0;
 }

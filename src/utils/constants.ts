@@ -13,6 +13,7 @@ export const ERROR_MESSAGES = {
   INVALID_DATE: "Date is invalid",
   NO_DATA_TO_EXPORT: "No data to export",
   NO_DATA_TO_DISPLAY: "No data displayed For",
+  NO_PRICING_DATA: "No pricing data available. Please upload a new CSV file or check existing data.",
 };
 
 // UI Labels and Headings
