@@ -1,5 +1,4 @@
 import React, { useRef, useState } from "react";
-import { parseCsvFile } from "../../utils/csvParser";
 import { ERROR_MESSAGES, FILE_INPUT, UI_LABELS } from "../../utils/constants";
 import { toast } from "react-toastify";
 import "./CsvUpload.css";
